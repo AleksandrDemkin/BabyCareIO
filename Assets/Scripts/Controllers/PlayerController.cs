@@ -1,3 +1,5 @@
+using static PlayerBaby;
+
 public class PlayerController : IExecute
 {
     private readonly PlayerBase _playerBase;
@@ -11,11 +13,8 @@ public class PlayerController : IExecute
     }
     public void Execute()
     {
-        _playerBase.Move(_joystick.Horizontal, 0, _joystick.Vertical);
         _playerBase.BabyAnim();
+        _playerBase.Move(_joystick.Horizontal, 0, _joystick.Vertical);
         _playerBase.RotationMove();
     }
-   
-
-    
 }
