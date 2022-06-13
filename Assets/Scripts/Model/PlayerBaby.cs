@@ -54,8 +54,16 @@ public class PlayerBaby : PlayerBase
             isClap = false;
             isCry = false;
         }
-        
-        
+
+        if (isCry)
+        {
+            StartCoroutine(TimeCry());
+        }
+
+        if (isClap)
+        {
+            StartCoroutine(TimeClap());
+        }
     }
 
     public override void BabyAnim()
@@ -102,7 +110,6 @@ public class PlayerBaby : PlayerBase
         _collider.isTrigger = false;
         yield return new WaitForSeconds(_timeToWait);
         isCry = false;
-        isIdle = true;
         _collider.isTrigger = true;
     }
     
@@ -115,7 +122,6 @@ public class PlayerBaby : PlayerBase
         _collider.isTrigger = false;
         yield return new WaitForSeconds(_timeToWait);
         isClap = false;
-        isIdle = true;
         _collider.isTrigger = true;
     }
 }

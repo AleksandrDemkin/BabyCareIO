@@ -32,18 +32,6 @@ namespace Model
                     Debug.Log($"SecondBotBack -> FirstBotBack");
                     return;
             }
-            
-            /*if (other.CompareTag("PlayerFront") || other.CompareTag("FirstBotFront"))
-            {
-                StartCoroutine(SecondEnemyBot.TimeCrySecondBot());
-                Debug.Log($"SecondBotBack -> PlayerFront || FirstBotFront");
-            }
-
-            if (other.CompareTag("PlayerBack") || other.CompareTag("FirstBotBack"))
-            {
-                StartCoroutine(SecondEnemyBot.TimeClapSecondBot());
-                Debug.Log($"SecondBotBack -> PlayerBack || FirstBotBack");
-            }*/
         }
     }
 }

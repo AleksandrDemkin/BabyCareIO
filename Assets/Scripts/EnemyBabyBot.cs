@@ -8,7 +8,11 @@ public class EnemyBabyBot : EnemyBabyBotBase
     [SerializeField]
     private bool _testFlag;
     private NavMeshAgent _agent;
-    
+    private static readonly int Idle = Animator.StringToHash("Idle");
+    private static readonly int Clap = Animator.StringToHash("Clap");
+    private static readonly int Walk = Animator.StringToHash("Walk");
+    private static readonly int Cry = Animator.StringToHash("Cry");
+
     public override void Awake()
     {
         _botCollider = GetComponent<CapsuleCollider>();
@@ -35,6 +39,7 @@ public class EnemyBabyBot : EnemyBabyBotBase
     {
         if (!isCry)
         {
+            isWalk = true;
             _agent.isStopped = false;
             FindClosestCube();
             if (!_goBuildCastle && _freeCubes.Contains(_closest) == true)
@@ -52,50 +57,58 @@ public class EnemyBabyBot : EnemyBabyBotBase
         else
         {
             _agent.isStopped = true;
+            isWalk = false;
+
+            if (isCry)
+            {
+                StartCoroutine(TimeCryBot());
+            }
+
+            if (isClap)
+            {
+                StartCoroutine(TimeClapBot());
+            }
+
+            if (isIdle)
+            {
+                StartCoroutine(TimeIdleBot());
+            }
         }
     }
     public override void AnimBot()
     {
         if (isIdle)
         {
-            _botAnim.SetBool("Idle", true);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry", false);
+            _botAnim.SetBool(Idle, true);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry, false);
         }
         
         if (isCry)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry", true);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry, true);
         }
 
         if (isClap)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", true);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry",false);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, true);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry,false);
         }
 
         if (isWalk)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Cry",false);
-            _botAnim.SetBool("Walk", true);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Cry,false);
+            _botAnim.SetBool(Walk, true);
         }
     }
-    
-    /*public override void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") || other.CompareTag("SecondEnemyBabyBot"))
-        {
-            StartCoroutine(TimeCryBot());
-        }
-    }*/
 
     public static IEnumerator TimeCryBot()
     {
@@ -107,7 +120,6 @@ public class EnemyBabyBot : EnemyBabyBotBase
         _goBuildCastle = false;
         yield return new WaitForSeconds(_timeCry);
         isCry = false;
-        yield return new WaitForSeconds(0.5f);
         _botCollider.isTrigger = true;
     }
     
@@ -120,7 +132,6 @@ public class EnemyBabyBot : EnemyBabyBotBase
         _botCollider.isTrigger = false;
         yield return new WaitForSeconds(_timeCry);
         isClap = false;
-        yield return new WaitForSeconds(0.5f);
         _botCollider.isTrigger = true;
     }
     
@@ -133,7 +144,6 @@ public class EnemyBabyBot : EnemyBabyBotBase
         _botCollider.isTrigger = false;
         yield return new WaitForSeconds(_timeCry);
         isIdle = false;
-        yield return new WaitForSeconds(0.5f);
         _botCollider.isTrigger = true;
     }
     
@@ -147,8 +157,7 @@ public class EnemyBabyBot : EnemyBabyBotBase
     }
     public override GameObject FindClosestCube()
     {
-
-        if ( _goBotTarget)
+        if (_goBotTarget)
         {
             _closest = _bottarget;
         }

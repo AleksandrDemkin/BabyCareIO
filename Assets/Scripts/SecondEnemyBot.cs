@@ -8,6 +8,11 @@ public class SecondEnemyBot : EnemyBabyBotBase
     [SerializeField]
     private bool _testFlag;
     private static NavMeshAgent _agent;
+    private static readonly int Idle = Animator.StringToHash("Idle");
+    private static readonly int Clap = Animator.StringToHash("Clap");
+    private static readonly int Walk = Animator.StringToHash("Walk");
+    private static readonly int Cry = Animator.StringToHash("Cry");
+
     public override void Awake()
     {
         _botCollider = GetComponent<CapsuleCollider>();
@@ -15,6 +20,10 @@ public class SecondEnemyBot : EnemyBabyBotBase
         _botAnim = GetComponent<Animator>();
         _freeCubes.AddRange(GameObject.FindGameObjectsWithTag("FreeCube"));
         _agent = GetComponent<NavMeshAgent>();
+        isIdle = true;
+        isCry = false;
+        isClap = false;
+        isWalk = false;
     }
 
     public override void SecondExecute()
@@ -72,51 +81,43 @@ public class SecondEnemyBot : EnemyBabyBotBase
     {
         if (isIdle)
         {
-            _botAnim.SetBool("Idle", true);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry", false);
+            _botAnim.SetBool(Idle, true);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry, false);
         }
         
         if (isCry)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry", true);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry, true);
         }
 
         if (isClap)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", true);
-            _botAnim.SetBool("Walk", false);
-            _botAnim.SetBool("Cry",false);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, true);
+            _botAnim.SetBool(Walk, false);
+            _botAnim.SetBool(Cry,false);
         }
 
         if (isWalk)
         {
-            _botAnim.SetBool("Idle", false);
-            _botAnim.SetBool("Clap", false);
-            _botAnim.SetBool("Cry",false);
-            _botAnim.SetBool("Walk", true);
+            _botAnim.SetBool(Idle, false);
+            _botAnim.SetBool(Clap, false);
+            _botAnim.SetBool(Cry,false);
+            _botAnim.SetBool(Walk, true);
         }
 
         if (_goBotTargetSecondBot && _castleBuiltSecondBot)
         {
             transform.Rotate(Vector3.up);
-            _botAnim.SetBool("Clap", true);
+            _botAnim.SetBool(Clap, true);
             _agent.isStopped = true;
         }
     }
-
-    /*public override void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player")|| other.CompareTag("FirstEnemyBabyBot"))
-        {
-            StartCoroutine(TimeCryBot());
-        }
-    }*/
 
     public override void RotateBotTarget()
     {

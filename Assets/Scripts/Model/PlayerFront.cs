@@ -25,11 +25,11 @@ namespace Model
                     Debug.Log($"PlayerFront -> SecondBotFront");
                     return;
                 case "FirstBotBack":
-                    StartCoroutine(PlayerBaby.TimeIdle());
+                    StartCoroutine(PlayerBaby.TimeClap());
                     Debug.Log($"PlayerFront -> FirstBotBack");
                     return;
                 case "SecondBotBack":
-                    StartCoroutine(PlayerBaby.TimeIdle());
+                    StartCoroutine(PlayerBaby.TimeClap());
                     Debug.Log($"PlayerFront -> SecondBotBack");
                     return;
             }
